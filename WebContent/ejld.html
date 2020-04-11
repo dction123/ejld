@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<script type="text/javascript">
+	function loadInfo() {
+		shi.options.length = 0;// 删除所有市下拉框的选项
+		var shengId = document.getElementById('sheng').value;
+		//----------------使用ajax---------------
+		var xmlhttp;
+		if(window.XMLHttpRequest){
+			xmlHttp = new XMLHttpRequest();
+		}else {
+			xmlHttp = new ActiveXObject("Microsoft.XMLHTTP");
+		}
+		xmlHttp.onreadystatechange = function() {
+			if(xmlHttp.readyState == 4 && xmlHttp.status == 200){
+				//alert(xmlHttp.responseText);
+				var data = eval("("+xmlHttp.responseText+")");
+				for(var i=0;i<data.rows.length;i++){
+					var o = data.rows[i];
+					shi.options.add(new Option(o.text,o.id));
+				}
+			}
+		};
+		xmlHttp.open("get", "getAjaxInfo?action=ejld&shengId="+shengId,true);
+		xmlHttp.send();
+		
+	}
+
+
+</script>
+<body>
+	省
+	<select id="sheng" onchange="loadInfo()">
+		<option value="1">江苏省</option>
+		<option value="2">山东省</option>
+		<option value="3">浙江省</option>
+	</select>
+	&nbsp;&nbsp;
+	市
+	<select id="shi">
+	</select>
+</body>
+</html>
